@@ -7,6 +7,16 @@ async function registerUser(req, res) {
 
     const { username, email, password } = req.body;
 
+    const isUserAlreadyExits = await userModel.findOne({
+      email,
+    });
+
+    if (isUserAlreadyExits) {
+      return res.status(409).json({
+        message: "user already exits",
+      });
+    }
+
     const user = await userModel.create({
       username,
       email,
